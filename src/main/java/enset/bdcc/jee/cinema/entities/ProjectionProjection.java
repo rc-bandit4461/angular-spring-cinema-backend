@@ -1,10 +1,5 @@
-package enset.bdcc.jee.cinema.projections;
+package enset.bdcc.jee.cinema.entities;
 
-import enset.bdcc.jee.cinema.entities.Film;
-import enset.bdcc.jee.cinema.entities.Salle;
-import enset.bdcc.jee.cinema.entities.Seance;
-import enset.bdcc.jee.cinema.entities.Ticket;
-import org.springframework.data.repository.Repository;
 import org.springframework.data.rest.core.config.Projection;
 
 import java.util.Collection;
@@ -24,5 +19,5 @@ public interface ProjectionProjection {
 
     public Seance getSeance();
 
-    public Collection<Ticket> getTickets();
+//    public Collection<Ticket> getTickets();
 }

@@ -27,7 +27,7 @@ public class CinemaApplication implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        Stream.of(Ville.class,Cinema.class, Salle.class,Projection.class,Seance.class,Film.class,Ticket.class,Place.class).forEach(aClass -> {
+        Stream.of(Ville.class,Categorie.class,Cinema.class, Salle.class,Projection.class,Seance.class,Film.class,Ticket.class,Place.class).forEach(aClass -> {
             restConfiguration.exposeIdsFor(aClass);
         });
         if(!ddlAuto.equals("create")) return;

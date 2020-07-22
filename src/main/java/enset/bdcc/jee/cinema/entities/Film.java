@@ -24,6 +24,7 @@ public class Film implements Serializable {
     private String realisateur;
     private String description;
     private String photo;
+    @Temporal(TemporalType.DATE)
     private Date dateSortie;
     @ManyToOne
     private Categorie categorie;
