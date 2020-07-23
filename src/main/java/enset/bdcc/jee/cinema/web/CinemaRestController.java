@@ -31,6 +31,8 @@ public class CinemaRestController {
     @Autowired
     private FilmRepository filmRepository;
     @Autowired
+    private UserRepository userRepository;
+    @Autowired
     private TicketRepository ticketRepository;
 
     @GetMapping(path = "/imageFilm/{id}", produces = MediaType.IMAGE_JPEG_VALUE)
@@ -62,6 +64,21 @@ public class CinemaRestController {
             ticket.setReserve(true);
             ticket.setNomClient(ticketForm.getNomClient());
             ticket.setCodePayment(ticketForm.getCodePayment());
+            ticketRepository.save(ticket);
+            ticketList.add(ticket);
+        });
+    }
+
+    @PostMapping("/payerTicketsUser")
+    @Transactional
+    public void payerTicketsUser(@RequestBody TicketFormUser ticketForm) {
+        List<Ticket> ticketList = new ArrayList<>();
+        User user = userRepository.getOne(ticketForm.getIdUser());
+        ticketForm.getTickets().forEach(id -> {
+            Ticket ticket = ticketRepository.getOne(id);
+            ticket.setReserve(true);
+            ticket.setNomClient(user.getLastName());
+            ticket.setCodePayment(new Random().nextInt(99999999));
             ticketRepository.save(ticket);
             ticketList.add(ticket);
         });
@@ -122,7 +139,7 @@ public class CinemaRestController {
                 });
             });
         });
-            ticketRepository.saveAll(tickets);
+        ticketRepository.saveAll(tickets);
     }
 }
 
@@ -131,6 +148,14 @@ public class CinemaRestController {
 class TicketForm {
     private String nomClient;
     private Integer codePayment;
+    private List<Long> tickets = new ArrayList<>();
+}
+
+
+@Data
+@NoArgsConstructor
+class TicketFormUser {
+    private Long idUser;
     private List<Long> tickets = new ArrayList<>();
 }
 

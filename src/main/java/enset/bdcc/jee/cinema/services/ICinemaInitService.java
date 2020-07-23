@@ -3,6 +3,8 @@ package enset.bdcc.jee.cinema.services;
 
 public interface ICinemaInitService {
     public void initVilles();
+    public void initRoles();
+    public void initUsers();
 
     public void initCinemas();
 

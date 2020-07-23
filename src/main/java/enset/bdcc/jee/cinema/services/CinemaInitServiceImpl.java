@@ -35,7 +35,11 @@ public class CinemaInitServiceImpl implements ICinemaInitService {
     @Autowired
     private TicketRepository ticketRepository;
     @Autowired
+    private UserRepository userRepository;
+    @Autowired
     private CategorieRepository categorieRepository;
+    @Autowired
+    private RoleRepository roleRepository;
 
 
     @Override
@@ -45,6 +49,26 @@ public class CinemaInitServiceImpl implements ICinemaInitService {
             ville.setName(cityName);
             villeRepository.save(ville);
         });
+    }
+
+    @Override
+    public void initRoles() {
+        Role role = new Role();
+        role.setRole("admin");
+        roleRepository.save(role);
+    }
+
+    @Override
+    public void initUsers() {
+         Role role = roleRepository.findAll().get(0);
+        User user = new User();
+        user.setEmail("admin");
+        user.setFirstName("Aymane");
+        user.setLastName("Boubleh");
+        user.setPassword("123");
+        user.setUsername("admin");
+        user.getRoles().add(role);
+        userRepository.save(user);
     }
 
     @Override

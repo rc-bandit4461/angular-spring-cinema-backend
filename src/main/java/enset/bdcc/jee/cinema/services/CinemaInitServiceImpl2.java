@@ -2,15 +2,14 @@ package enset.bdcc.jee.cinema.services;
 
 import enset.bdcc.jee.cinema.dao.*;
 import enset.bdcc.jee.cinema.entities.*;
-import org.apache.tomcat.jni.Local;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 import java.util.Random;
@@ -36,9 +35,13 @@ public class CinemaInitServiceImpl2 implements ICinemaInitService {
     @Autowired
     private TicketRepository ticketRepository;
     @Autowired
+    private UserRepository userRepository;
+    @Autowired
     private CategorieRepository categorieRepository;
-
-
+    @Autowired
+    private RoleRepository roleRepository;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
     @Override
     public void initVilles() {
         Stream.of("Casablanca", "Rabat", "ElJadida", "Tanger").forEach(cityName -> {
@@ -46,6 +49,36 @@ public class CinemaInitServiceImpl2 implements ICinemaInitService {
             ville.setName(cityName);
             villeRepository.save(ville);
         });
+    }
+
+    @Override
+    public void initRoles() {
+        Role role = new Role();
+        role.setRole("admin");
+        roleRepository.save(role);
+         Role role2 = new Role();
+        role2.setRole("owner");
+        roleRepository.save(role2);
+    }
+
+    @Override
+    public void initUsers() {
+        Role role = roleRepository.findAll().get(0);
+        User user = new User();
+        user.setEmail("ayman.boubleh@gmail.com");
+        user.setFirstName("Aymane");
+        user.setLastName("Boubleh");
+        user.setPassword(passwordEncoder.encode("123"));
+        user.setUsername("admin");
+        user.getRoles().addAll(roleRepository.findAll());
+        userRepository.save(user);
+        User user2 = new User();
+        user2.setEmail("zakaria.chadli@gmail.com");
+        user2.setFirstName("zakaria");
+        user2.setLastName("chadli");
+        user2.setPassword(passwordEncoder.encode("123"));
+        user2.setUsername("aymanboubleh");
+        userRepository.save(user2);
     }
 
     @Override
